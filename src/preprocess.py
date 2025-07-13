@@ -24,9 +24,9 @@ def preprocess(input_path,output_path):
 if __name__== "__main__" :
     
 
-    # input_path,output_path = params["input"],params["output"]
+    input_path,output_path = params["input"],params["output"]
 
-    input_path = sys.argv[1]
-    output_path = sys.argv[2]
+    # input_path = sys.argv[1]
+    # output_path = sys.argv[2]
 
     preprocess(input_path,output_path)

@@ -24,6 +24,7 @@ def train(data_path,model_path,random_state,n_estimators,max_depth):
     X = data.drop(columns=["Outcome"])
     y = data["Outcome"]
 
+    mlflow_params = yaml.safe_load(open("params.yaml"))['mlflow']
     mlflow.set_tracking_uri(mlflow_params["MLFLOW_TRACKING_URI"])
     with mlflow.start_run():
 
@@ -100,5 +101,5 @@ if __name__=="__main__":
     os.environ['AWS_ACCESS_KEY_ID'] = aws_params['aws_access_key_id']
     os.environ['AWS_SECRET_ACCESS_KEY'] = aws_params['aws_secret_access_key']
     os.environ['AWS_DEFAULT_REGION'] = aws_params['region_name']
-
+    
     train(train_params["data"],train_params["model_path"],train_params["random_state"], train_params["n_estimators"],train_params['max_depth'])
