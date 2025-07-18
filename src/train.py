@@ -6,12 +6,19 @@ from sklearn.metrics import accuracy_score,confusion_matrix,classification_repor
 import os
 from urllib.parse import urlparse
 from sklearn.model_selection import train_test_split,GridSearchCV
-import matplotlib.pyplot as plt
-import seaborn as sns
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 import mlflow
 from mlflow.models import infer_signature
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 import boto3
+
+import s3fs
+
+def open_df(data_path,aws_params):
+    # Read CSV from S3
+    df = pd.read_csv(data_path, storage_options={"key": aws_params['aws_access_key_id'], "secret": aws_params['aws_secret_access_key']})
+    return df
 
 def hyperparameter_tuning(X_train,y_train,param_grid):
     rf = RandomForestClassifier()
@@ -19,12 +26,11 @@ def hyperparameter_tuning(X_train,y_train,param_grid):
     grid_search.fit(X_train,y_train)
     return grid_search
 
-def train(data_path,model_path,random_state,n_estimators,max_depth):
-    data = pd.read_csv(data_path)
+def train(data_path,aws_params,model_path,random_state,n_estimators,max_depth):
+    data = open_df(data_path,aws_params)
     X = data.drop(columns=["Outcome"])
     y = data["Outcome"]
 
-    mlflow_params = yaml.safe_load(open("params.yaml"))['mlflow']
     mlflow.set_tracking_uri(mlflow_params["MLFLOW_TRACKING_URI"])
     with mlflow.start_run():
 
@@ -75,16 +81,16 @@ def train(data_path,model_path,random_state,n_estimators,max_depth):
                 for metric, value in metrics.items():
                     mlflow.log_metric(f"{label}_{metric}",value)
 
-        conf_matrix = confusion_matrix(y_test,y_pred)
-        plt.figure(figsize=(8,6))
-        sns.heatmap(conf_matrix,annot=True, fmt="d", cmap="Blues")
-        plt.xlabel("Predicted")
-        plt.ylabel("Actual")
-        plt.title("Confusion_matrix")
+        # conf_matrix = confusion_matrix(y_test,y_pred)
+        # plt.figure(figsize=(8,6))
+        # sns.heatmap(conf_matrix,annot=True, fmt="d", cmap="Blues")
+        # plt.xlabel("Predicted")
+        # plt.ylabel("Actual")
+        # plt.title("Confusion_matrix")
 
-        # artifacts
-        plt.savefig("confusion_matrix.png")
-        mlflow.log_artifact("confusion_matrix.png")
+        # # artifacts
+        # plt.savefig("confusion_matrix.png")
+        # mlflow.log_artifact("confusion_matrix.png")
 
         # logging the model :
         mlflow.sklearn.log_model(best_model, "Best_RandomForestClassifier",
@@ -101,5 +107,5 @@ if __name__=="__main__":
     os.environ['AWS_ACCESS_KEY_ID'] = aws_params['aws_access_key_id']
     os.environ['AWS_SECRET_ACCESS_KEY'] = aws_params['aws_secret_access_key']
     os.environ['AWS_DEFAULT_REGION'] = aws_params['region_name']
-    
-    train(train_params["data"],train_params["model_path"],train_params["random_state"], train_params["n_estimators"],train_params['max_depth'])
+
+    train(train_params["data"],aws_params,train_params["model_path"],train_params["random_state"], train_params["n_estimators"],train_params['max_depth'])
