@@ -50,11 +50,29 @@ mlflow server -h 0.0.0.0 --default-artifact-root s3://YOUR_BUCKET_NAME
 et grace à ça les modèles que vous crée sont maintenant en ligne.
 
 
+11. Crée une repository git sur git hub, cloner la sur un dossier vide locale
+12. Ajouter les fichier que vous avez crée dans votre code dans le dossier contenant le git
+13. git .; git commit -m "first commit"; git push
+14. initier dvc avec `dvc init`
+15. crée une repository dvc 
+```bash
+    dvc init
+    conda install dvc[s3]
+    dvc remote add -d dvcstore s3://mlops-deml-ya-01/data
+    dvc remote modify dvcstore access_key_id   *******
+    dvc remote modify dvcstore secret_access_key ********
+```
 
+
+
+
+## Complemenatires  :
 > Une façon simple pour accéder à votre machine EC2 depuis votre terminale : 
 ```bash
 ssh -i path/to/your-key.pem ec2-user@<your-ec2-public-ip>
 # ex:
 ssh -i "C:\Users\yana\Downloads\mlflow-server-ya.pem" ubuntu@13.53.36.3
 ```
+
+
 
