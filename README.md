@@ -9,7 +9,6 @@ HTML, CSS, JS (maybe)
 
 # 1. Mise de l'environement MLFLOW sur AWS : 
 1. Allez dans votre compte AWS,
-2. Crée un utilisateur dans IAM, avec permissions admin, et crée un clé d'accès et le telecharger.
 3. Crée un bucket s3, (rendre son accès public - pour minimiser les configuration nécessaire entre s3 et MLFLOW)
 4. Crée une machine Ec2 (type medium, OS:ubuntu), crée un key paire pour cette machine.
 5. sur cette machine on doit configurer notre MLFLOW avec les commandes suivantes : 
