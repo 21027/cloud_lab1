@@ -10,8 +10,10 @@ HTML, CSS, JS (maybe)
 # 1. Mise de l'environement MLFLOW sur AWS : 
 1. Allez dans votre compte AWS,
 3. Crée un bucket s3, (rendre son accès public - pour minimiser les configuration nécessaire entre s3 et MLFLOW)
-4. Crée un utilisateur dans IAM, avec permissions admin, et crée un clé d'accès et le telecharger.
-5. Crée une machine Ec2 (type medium, OS:ubuntu), crée un key paire pour cette machine.
+4. Crée un utilisateur dans IAM,  et crée un clé d'accès et le telecharger.
+5. Crée une machine Ec2 (type medium, OS:ubuntu), crée un key paire pour cette machine. donnez lui un accès Custom Port 5000 avec source 0.0.0.0/0 (tous le monde), 
+5.5 Si vous avez skipper le custom port 5000 accès vous pouvez allez dans la liste des instances, clicker sur l'ID de votre instance, et dans l'onglet Security clicker sur le nom de votre security group, (image 1)
+et ajouter la nouvelle règle dans les inboud rules.
 6. sur cette machine on doit configurer notre MLFLOW avec les commandes suivantes : 
 ```bash
 sudo apt update
@@ -34,7 +36,7 @@ aws configure
 7. Maintenant vous pouvez lancer mlflow dans cette machine en y précisant le nom de votre bucket (NB: le bucket sera utiliser pour stoker le cash de MLFLOW les runs, les experiments, les artefacts logé, les models ...)
 ```bash
     # run mlflow server to be accessible globaly
-    mlflow server -h 0.0.0.0 --default-artifact-root s3://YOUR_BUCKET_NAME
+    mlflow server --host 0.0.0.0 --port 5000 --default-artifact-root --allowed-hosts "*" --cors-allowed-origins "*" s3://YOUR_BUCKET_NAME
 ```
 
 8. Mlflow est running donc vous pouvez l'accéder depuis l'adresse le lien `http://ADDRESS_IP_EC2:5000`
@@ -43,14 +45,15 @@ aws configure
 ```bash
 cd mlflow
 pipenv shell
-mlflow server -h 0.0.0.0 --default-artifact-root s3://YOUR_BUCKET_NAME
+mlflow server --host 0.0.0.0 --port 5000 --default-artifact-root --allowed-hosts "*" --cors-allowed-origins "*" s3://YOUR_BUCKET_NAME
 ```
 
 10. Maintenant vous pouvez ajouter ce lien `http://ADDRESS_IP_EC2:5000` comme votre mlflow_tracking_uri dans vos scripts ou notebook locales,
 et grace à ça les modèles que vous crée sont maintenant en ligne.
 
+
 # 2.Repository git:
-11. Crée une repository git sur github, cloner la sur un dossier vide locale
+11. Cloner cette repository git localement dans votre machine
 12. Ajouter les fichier que vous avez crée dans votre code dans le dossier contenant le git
 13. Faitez un push : `git add .`; `git commit -m "first commit"`; `git push`
 
@@ -105,3 +108,7 @@ ssh -i "C:\Users\yana\Downloads\mlflow-server-ya.pem" ubuntu@13.53.36.3
 
 
 
+
+
+image 1 :
+![alt text](image.png)
