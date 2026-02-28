@@ -15,6 +15,9 @@ import boto3
 
 import s3fs
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+print("Starting the training Process")
 def open_df(data_path,aws_params):
     # Read CSV from S3
     df = pd.read_csv(data_path, storage_options={"key": aws_params['aws_access_key_id'], "secret": aws_params['aws_secret_access_key']})
@@ -99,10 +102,12 @@ def train(data_path,aws_params,model_path,random_state,n_estimators,max_depth):
 
 
 if __name__=="__main__":
+    params_path = os.path.join(BASE_DIR, "params.yaml")
+    params = yaml.safe_load(open(params_path))
 
-    train_params = yaml.safe_load(open("params.yaml"))['train']
-    mlflow_params = yaml.safe_load(open("params.yaml"))['mlflow']
-    aws_params = yaml.safe_load(open("params.yaml"))['aws']
+    train_params = params['train']
+    mlflow_params = params['mlflow']
+    aws_params = params['aws']
     # Set AWS credentials as environment variables for MLflow and boto3 to use
     os.environ['AWS_ACCESS_KEY_ID'] = aws_params['aws_access_key_id']
     os.environ['AWS_SECRET_ACCESS_KEY'] = aws_params['aws_secret_access_key']

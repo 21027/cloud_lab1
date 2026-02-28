@@ -10,8 +10,12 @@ import os
 import mlflow
 
 # load
-train_params = yaml.safe_load(open("params.yaml"))['train']
-mflow_params = yaml.safe_load(open("params.yaml"))['mlflow']
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+params_path = os.path.join(BASE_DIR, "params.yaml")
+params = yaml.safe_load(open(params_path))
+
+train_params = params['train']
+mflow_params = params['mlflow']
 
 
 def evaluate(data_path,model_path):

@@ -1,0 +1,25 @@
+preprocess:
+  input : data/raw/diabetes.csv
+  output : data/processed/data.csv
+
+train : 
+  data : data/processed/data.csv
+  model_path : models/model.pkl
+  random_state : 42
+  n_estimators: 100
+  max_depth: 5
+
+# dagshub :
+# # dagshub experiment tracking uri : found in experiment onglet
+#   MLFLOW_TRACKING_URI : https://dagshub.com/yehdihouldanna/mlpipeline-mlflow-dvc.mlflow
+#   MLFLOW_TRACKING_USERNAME : yehdihouldanna
+# # this is the token in your profile (default) and you can also copy it from the dvc onglet in the repository
+#   MLFLOW_TRACKING_PASSWORD : 28fdecc4cae73c08dadfd562c7bfe688f20b9a78
+
+aws :
+  aws_access_key_id: *
+  aws_secret_access_key: *
+  region_name: eu-west-3
+
+mlflow:
+  MLFLOW_TRACKING_URI: http://*:5000/
