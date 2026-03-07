@@ -3,4 +3,4 @@
 .vscode/
 params.yaml
 .env
-.aws
+.awsparams.yaml
