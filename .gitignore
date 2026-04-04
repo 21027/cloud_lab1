@@ -4,3 +4,4 @@
 params.yaml
 .env
 .awsparams.yaml
+data/

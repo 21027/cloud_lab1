@@ -1,0 +1,14 @@
+md5: c499e4f83a6d63fee34a388b18bf41eb
+frozen: true
+deps:
+- md5: 510800b98b33004652cf6e18269e2b21.dir
+  size: 47163
+  nfiles: 2
+  hash: md5
+  path: s3://lab1-s3-21027/data/
+outs:
+- md5: 9f00e8a4cc5fdc7b7ec1dfb33ea07557.dir
+  size: 47163
+  nfiles: 2
+  hash: md5
+  path: data
