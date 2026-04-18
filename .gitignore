@@ -5,3 +5,5 @@ params.yaml
 .env
 .awsparams.yaml
 data/
+params_old.yaml
+/modelsgit 
