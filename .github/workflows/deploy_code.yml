@@ -71,5 +71,5 @@ jobs:
 
       - name: Health check
         run: |
-          sleep 30
+          sleep 60
           curl --fail http://${{ secrets.EC2_HOST }}:8000/ || exit 1
