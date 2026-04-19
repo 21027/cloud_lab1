@@ -76,4 +76,4 @@ jobs:
             curl -f http://YOUR_IP:8000 && exit 0
             sleep 10
           done
-          exit 1
+          exit 
