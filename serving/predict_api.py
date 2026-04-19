@@ -30,7 +30,9 @@ app = FastAPI(title="API de prédiction ML")
 @app.get("/")
 def home():
     return {"message": "API MLflow opérationnelle"}
-
+@app.get("/")
+def health():
+    return {"status": "ok"}
 @app.post("/predict")
 def predict(data: dict):
 
