@@ -47,7 +47,7 @@ jobs:
                 --default-artifact-root ${{ secrets.S3_BUCKET }} \
                 --allowed-hosts "*" --cors-allowed-origins "*" > mlflow.log 2>&1 &
             cd ..
-            cd ~/mlops_aws
+            cd ~/lab2/cloud_lab1
             git pull origin main
 
             # Activate conda/venv if needed
