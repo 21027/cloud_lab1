@@ -1,4 +1,4 @@
-name: Deploy Code - Build & Redeploy API
+name: Deploy Code - Build & Redeploy 
 
 on:
   push:
